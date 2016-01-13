@@ -242,10 +242,12 @@ namespace Enyim.Caching
 		{
 			sb.Length = 0;
 			visitor.Visit(Metrics.GetAll());
-			Console.CursorLeft = 0;
+#if NET451
+            Console.CursorLeft = 0;
 			Console.CursorTop = 0;
-			Console.Write(sb.ToString());
-		}
+#endif
+			Console.WriteLine(sb.ToString());
+        }
 
 		public void StartPeriodicReporting(int time, Interval interval, CancellationToken cancellationToken)
 		{
@@ -415,7 +417,9 @@ namespace Enyim.Caching
 			{
 				slices = new Entry[Environment.ProcessorCount + 16];
 				global = 0;
+#if NET451
 				Thread.MemoryBarrier();
+#endif
 			}
 
 			public virtual void Reset()

@@ -18,8 +18,8 @@ namespace Enyim.Caching
 		private const int ALIVE = 1;
 		private const int DEAD = 0;
 
-		private static readonly ILog log = LogManager.GetCurrentClassLogger();
-		private static readonly bool LogTraceEnabled = log.IsTraceEnabled;
+		private static readonly ILog log = LogManager.GetLogger<NodeBase>();
+        private static readonly bool LogTraceEnabled = log.IsTraceEnabled;
 		private static readonly bool LogDebugEnabled = log.IsDebugEnabled;
 		private static readonly bool LogInfoEnabled = log.IsInfoEnabled;
 		private readonly CoreEventSource trace = EventSources.CoreEventSource;

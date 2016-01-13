@@ -1,10 +1,14 @@
 ﻿using System;
+#if NET451
 using System.Diagnostics.CodeAnalysis;
+#endif
 
 namespace Enyim.Caching
 {
-	[SuppressMessage("Potential Code Quality Issues", "NonReadonlyReferencedInGetHashCodeIssue:Non-readonly field referenced in 'GetHashCode()'", Justification = "Only Dispose() changes the array")]
-	public struct Key : IDisposable
+#if NET451
+    [SuppressMessage("Potential Code Quality Issues", "NonReadonlyReferencedInGetHashCodeIssue:Non-readonly field referenced in 'GetHashCode()'", Justification = "Only Dispose() changes the array")]
+#endif
+    public struct Key : IDisposable
 	{
 		public static readonly Key Empty = new Key { array = new byte[0] };
 

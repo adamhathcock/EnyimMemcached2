@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET451
+using System;
 using System.Configuration;
 
 namespace Enyim.Caching.Configuration
@@ -13,6 +14,7 @@ namespace Enyim.Caching.Configuration
 		}
 	}
 }
+#endif
 
 #region [ License information          ]
 

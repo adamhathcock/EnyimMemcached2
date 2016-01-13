@@ -1,0 +1,23 @@
+{
+    "version": "3.2.3",
+    "summary": "EnyimMemcached",
+    "frameworks": {
+        "dnxcore50": { },
+        "net451": { }
+    },
+    "dependencies": {
+        "Core": "3.2.3"
+    },
+    "configurations": {
+        "Debug": {
+            "compilationOptions": {
+                "allowUnsafe": true
+            }
+        },
+        "Release": {
+            "compilationOptions": {
+                "allowUnsafe": true
+            }
+        }
+    }
+}

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET451
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -132,6 +133,7 @@ namespace Enyim.Caching.Configuration
 		}
 	}
 }
+#endif
 
 #region [ License information          ]
 

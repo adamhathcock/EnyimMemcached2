@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NET451
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -40,7 +41,7 @@ namespace Enyim.Caching
 			pool.ReturnBuffer(buffer);
 		}
 
-		#region [ Leak detection               ]
+#region [ Leak detection               ]
 
 		private readonly ConditionalWeakTable<byte[], Tracker> trackers = new ConditionalWeakTable<byte[], Tracker>();
 
@@ -72,9 +73,11 @@ namespace Enyim.Caching
 			}
 		}
 
-		#endregion
+#endregion
 	}
 }
+
+#endif
 
 #region [ License information          ]
 

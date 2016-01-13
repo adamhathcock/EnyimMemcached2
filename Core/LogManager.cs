@@ -20,19 +20,26 @@ namespace Enyim.Caching
 		public static ILog GetLogger(Type type)
 		{
 			return factory.GetLogger(type);
-		}
+        }
 
-		[MethodImpl(MethodImplOptions.NoInlining)]
+        public static ILog GetLogger<T>()
+        {
+            return factory.GetLogger(typeof(T));
+        }
+
+#if NET451
+        [MethodImpl(MethodImplOptions.NoInlining)]
 		public static ILog GetCurrentClassLogger()
 		{
 			var frame = new System.Diagnostics.StackFrame(1, false);
 
 			return GetLogger(frame.GetMethod().DeclaringType.FullName);
 		}
+#endif
 
-		#region [ NullLoggerFactory            ]
+        #region [ NullLoggerFactory            ]
 
-		private class NullLoggerFactory : ILogFactory
+        private class NullLoggerFactory : ILogFactory
 		{
 			private static readonly ILog Instance = new Ω();
 

@@ -201,9 +201,10 @@ namespace Enyim.Caching
 			Write(byteArray, 0, 1);
 		}
 
-		#region [ Stream overrides             ]
+        #region [ Stream overrides             ]
 
-		public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
+#if NETCORE451
+        public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
 		{
 			throw new NotSupportedException();
 		}
@@ -227,6 +228,7 @@ namespace Enyim.Caching
 		{
 			throw new NotSupportedException();
 		}
+#endif
 
 		public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
 		{
@@ -250,7 +252,7 @@ namespace Enyim.Caching
 			throw new NotSupportedException();
 		}
 
-		#endregion
+#endregion
 	}
 }
 

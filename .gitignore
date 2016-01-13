@@ -10,3 +10,5 @@ obj/
 Tester/
 TestResults/
 output/
+
+project.lock.json

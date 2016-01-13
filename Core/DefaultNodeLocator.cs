@@ -11,7 +11,8 @@ namespace Enyim.Caching
 	public class DefaultNodeLocator : INodeLocator
 	{
 		private const int ServerAddressMutations = 160;
-		private static readonly Encoding NoPreambleUtf8 = new UTF8Encoding(false);
+        //TODO: check this
+	    private static readonly Encoding NoPreambleUtf8 = Encoding.UTF8;
 
 		private INode[] nodes;
 		private uint[] keyRing;

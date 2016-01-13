@@ -29,7 +29,7 @@ namespace Enyim.Caching
 
 		#endregion
 
-		private static readonly ILog log = LogManager.GetCurrentClassLogger();
+		private static readonly ILog log = LogManager.GetLogger<AsyncSocket>();
 		private readonly object ConnectLock = new object();
 		private readonly CoreEventSource trace = EventSources.CoreEventSource;
 
@@ -408,7 +408,7 @@ namespace Enyim.Caching
 					using (socket)
 					{
 						socket.Shutdown(SocketShutdown.Both);
-						socket.Close();
+						socket.Dispose();
 					}
 				}
 				catch (Exception e)

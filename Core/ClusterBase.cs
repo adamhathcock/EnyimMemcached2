@@ -10,8 +10,8 @@ namespace Enyim.Caching
 {
 	public abstract class ClusterBase : ICluster
 	{
-		private static readonly ILog log = LogManager.GetCurrentClassLogger();
-		private static readonly bool LogTraceEnabled = log.IsTraceEnabled;
+		private static readonly ILog log = LogManager.GetLogger<ClusterBase>();
+        private static readonly bool LogTraceEnabled = log.IsTraceEnabled;
 		private static readonly bool LogDebugEnabled = log.IsDebugEnabled;
 		private static readonly bool LogInfoEnabled = log.IsInfoEnabled;
 
