@@ -1,18 +1,18 @@
-﻿#if NET451
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+#if NET451
 using System.ServiceModel.Channels;
+#endif
 
 namespace Enyim.Caching
 {
-	public sealed class BufferManagerAllocator : IBufferAllocator
+#if NET451
+    public sealed class BufferManagerAllocator : IBufferAllocator
 	{
 		private readonly BufferManager pool;
 
 		public BufferManagerAllocator(int maxBufferSize, long maxBufferPoolSize)
 		{
-			pool = BufferManager.CreateBufferManager(maxBufferPoolSize, maxBufferSize);
+            pool = BufferManager.CreateBufferManager(maxBufferPoolSize, maxBufferSize);
 		}
 
 		public void Dispose()
@@ -32,9 +32,30 @@ namespace Enyim.Caching
 		{
 			pool.ReturnBuffer(buffer);
 		}
-	}
-}
+    }
+#else
+    //TODO: use System.Buffers in RC2
+    public sealed class BufferManagerAllocator : IBufferAllocator
+    {
+        public BufferManagerAllocator(int maxBufferSize, long maxBufferPoolSize)
+        {
+        }
+
+        public void Dispose()
+        {
+        }
+
+        public byte[] Take(int size)
+        {
+            return new byte[size];
+        }
+
+        public void Return(byte[] buffer)
+        {
+        }
+    }
 #endif
+}
 
 #region [ License information          ]
 

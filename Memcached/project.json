@@ -1,13 +1,7 @@
 {
     "version": "3.2.3",
     "summary": "EnyimMemcached",
-    "frameworks": {
-        "dnxcore50": { },
-        "net451": { }
-    },
-    "dependencies": {
-        "Core": "3.2.3"
-    },
+
     "configurations": {
         "Debug": {
             "compilationOptions": {
@@ -19,5 +13,22 @@
                 "allowUnsafe": true
             }
         }
+    },
+
+    "exclude": [ "AssemblyInfo.cs",
+        "**/SaslStart.cs",
+        "**/SaslStep.cs", 
+        "**/SaslContinue.cs" ],
+
+    "dependencies": {
+        "Core": "3.2.3"
+    },
+    "frameworks": {
+        "dnxcore50": {
+            "dependencies": {
+                "System.Runtime.Serialization.Json": "4.0.1-beta-23516"
+            }
+        },
+        "net451": { }
     }
 }
