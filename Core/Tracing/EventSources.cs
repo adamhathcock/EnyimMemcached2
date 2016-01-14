@@ -1,9 +1,58 @@
-﻿namespace Enyim.Caching
+﻿using System.Net.Sockets;
+
+namespace Enyim.Caching
 {
 	internal static class EventSources
 	{
-		//public static readonly CoreEventSource CoreEventSource = EventSourceFactory.Get<CoreEventSource>();
-	}
+	    public static readonly CoreEventSource CoreEventSource = new NullEventSource();//EventSourceFactory.Get<CoreEventSource>();
+    }
+
+    internal class NullEventSource : CoreEventSource
+    {
+        public override void ConnectFail(string endpoint, SocketError status)
+        {
+        }
+
+        public override void ConnectStart(string endpoint)
+        {
+        }
+
+        public override void ConnectStop(string endpoint)
+        {
+        }
+
+        public override void DequeueReadOp(string address)
+        {
+        }
+
+        public override void DequeueWriteOp(string address)
+        {
+        }
+
+        public override void EnqueueReadOp(string address)
+        {
+        }
+
+        public override void EnqueueWriteOp(string address)
+        {
+        }
+
+        public override void ReceiveStart(string endpoint, bool isAlive)
+        {
+        }
+
+        public override void ReceiveStop(string endpoint, bool isAlive, bool success)
+        {
+        }
+
+        public override void SendStart(string endpoint, bool isAlive, int byteCount)
+        {
+        }
+
+        public override void SendStop(string endpoint, bool isAlive, bool success)
+        {
+        }
+    }
 }
 
 #region [ License information          ]
