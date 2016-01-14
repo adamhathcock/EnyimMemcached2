@@ -12,7 +12,7 @@ namespace Enyim.Caching.Memcached
 	public class MemcachedNode : NodeBase
 	{
 		private const int SilentCountThreshold = 50;
-		private static readonly ILog log = LogManager.GetCurrentClassLogger();
+		private static readonly ILog log = LogManager.GetLogger<MemcachedNode>();
 
 		private readonly IBufferAllocator allocator;
 		private int silentCount;

@@ -15,9 +15,9 @@ namespace Enyim.Caching.Memcached
 		/// </summary>
 		public static readonly IPEndPoint All = new IPEndPoint(IPAddress.Any, 0);
 
-		private static readonly ILog log = LogManager.GetCurrentClassLogger();
-		// Summable StatItems start at OpSum
-		private const int OpSum = 0x100;
+		private static readonly ILog log = LogManager.GetLogger<ServerStats>();
+        // Summable StatItems start at OpSum
+        private const int OpSum = 0x100;
 
 		#region readonly string[] StatKeys
 

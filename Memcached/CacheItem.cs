@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+#if NET451
 using System.Diagnostics.CodeAnalysis;
+#endif
 using System.IO;
 
 namespace Enyim.Caching.Memcached
 {
-	[SuppressMessage("Potential Code Quality Issues", "NonReadonlyReferencedInGetHashCodeIssue:Non-readonly field referenced in 'GetHashCode()'", Justification = "Only Dispose() changes the array")]
+#if NET451
+    [SuppressMessage("Potential Code Quality Issues", "NonReadonlyReferencedInGetHashCodeIssue:Non-readonly field referenced in 'GetHashCode()'", Justification = "Only Dispose() changes the array")]
+#endif
 	public struct CacheItem : IDisposable
 	{
 		public static readonly CacheItem Empty = new CacheItem(0, PooledSegment.Empty);

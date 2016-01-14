@@ -6,7 +6,7 @@ namespace Enyim.Caching.Memcached
 {
 	public partial class SimpleMemcachedClient : MemcachedClientBase, ISimpleMemcachedClient
 	{
-		private static readonly ILog log = LogManager.GetCurrentClassLogger();
+	    private static readonly ILog log = LogManager.GetLogger<SimpleMemcachedClient>();
 
 		public SimpleMemcachedClient() { }
 		public SimpleMemcachedClient(IContainer container) : base(container) { }

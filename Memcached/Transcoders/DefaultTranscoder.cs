@@ -4,8 +4,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+#if NET451
 using System.Runtime.Serialization.Formatters.Binary;
+#else
+using System.Runtime.Serialization.Json;
+#endif
 using System.Text;
+using System.Reflection;
 
 namespace Enyim.Caching.Memcached
 {
@@ -27,16 +32,13 @@ namespace Enyim.Caching.Memcached
 			if (tmpByteArray != null)
 				return new CacheItem(RawDataFlag, new PooledSegment(tmpByteArray, tmpByteArray.Length));
 
-			// got some real data, serialize it
-			var code = value == null
-						? TypeCode.DBNull
-						: Type.GetTypeCode(value.GetType());
+            // got some real data, serialize it
+            var code = value?.GetType().GetTypeCode() ?? TypeCode.Empty;
 
 			PooledSegment data;
 			switch (code)
 			{
-				case TypeCode.Empty:
-				case TypeCode.DBNull: data = PooledSegment.Empty; break;
+				case TypeCode.Empty: data = PooledSegment.Empty; break;
 				case TypeCode.String: data = SerializeString((String)value); break;
 
 				case TypeCode.SByte: data = PooledBitConverter.GetBytes(allocator, (SByte)value); break;
@@ -72,7 +74,7 @@ namespace Enyim.Caching.Memcached
 			return new CacheItem((uint)((int)code | 0x100), data);
 		}
 
-		public object Deserialize(CacheItem item)
+		public object Deserialize(Type type, CacheItem item)
 		{
 			if (item.Segment.Array == null)
 				return null;
@@ -95,13 +97,12 @@ namespace Enyim.Caching.Memcached
 
 			switch (code)
 			{
-				case TypeCode.DBNull: return null;
+				case TypeCode.Empty: return null;
 
 				// incrementing a non-existing key then getting it
 				// returns as a string, but the flag will be 0
 				// so treat all 0 flagged items as string
 				// this may help inter-client data management as well
-				case TypeCode.Empty:
 				case TypeCode.String: return DeserializeString(data);
 
 				case TypeCode.Byte: return data.Array[0];
@@ -122,7 +123,7 @@ namespace Enyim.Caching.Memcached
 				case TypeCode.Double: return PooledBitConverter.ToDouble(data);
 				case TypeCode.Decimal: return PooledBitConverter.ToDecimal(data);
 
-				case TypeCode.Object: return DeserializeObject(data);
+				case TypeCode.Object: return DeserializeObject(type, data);
 				default: throw new InvalidOperationException("Unknown TypeCode was returned: " + code);
 			}
 		}
@@ -148,9 +149,13 @@ namespace Enyim.Caching.Memcached
 		{
 			using (var ms = new PooledMemoryStream(allocator))
 			{
-				new BinaryFormatter().Serialize(ms, value);
+#if NET451
+                new BinaryFormatter().Serialize(ms, value);
+#else
+                new DataContractJsonSerializer(value.GetType()).WriteObject(ms, value);
+#endif
 
-				var retval = new PooledSegment(allocator, (int)ms.Length);
+                var retval = new PooledSegment(allocator, (int)ms.Length);
 				ms.Position = 0;
 				ms.Read(retval.Array, 0, retval.Count);
 
@@ -158,13 +163,21 @@ namespace Enyim.Caching.Memcached
 			}
 		}
 
-		private static object DeserializeObject(PooledSegment value)
+		private static object DeserializeObject(Type type, PooledSegment value)
 		{
 			using (var ms = new MemoryStream(value.Array, 0, value.Count))
-			{
-				return new BinaryFormatter().Deserialize(ms);
-			}
-		}
+            {
+#if NET451
+                return new BinaryFormatter().Deserialize(ms);
+#else
+                if (type == null)
+                {
+                    throw new InvalidOperationException("Null type specified for object deserialization");
+                }
+                return new DataContractJsonSerializer(type).ReadObject(ms);
+#endif
+            }
+        }
 	}
 }
 

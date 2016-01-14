@@ -1,15 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
+#if NET451
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
+#endif
 
 namespace Enyim.Caching.Memcached
 {
-	/// <summary>
-	/// Provides a reference to an segment of bytes allocated from a buffer pool.
-	/// </summary>
-	[SuppressMessage("Potential Code Quality Issues", "NonReadonlyReferencedInGetHashCodeIssue:Non-readonly field referenced in 'GetHashCode()'", Justification = "Only Dispose() changes the array")]
-	public struct PooledSegment : IDisposable
+    /// <summary>
+    /// Provides a reference to an segment of bytes allocated from a buffer pool.
+    /// </summary>
+#if NET451
+    [SuppressMessage("Potential Code Quality Issues", "NonReadonlyReferencedInGetHashCodeIssue:Non-readonly field referenced in 'GetHashCode()'", Justification = "Only Dispose() changes the array")]
+#endif
+    public struct PooledSegment : IDisposable
 	{
 		public static readonly PooledSegment Empty = new PooledSegment { array = new byte[0] };
 

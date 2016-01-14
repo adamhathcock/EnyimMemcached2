@@ -9,7 +9,7 @@ namespace Enyim.Caching.Memcached
 {
 	public abstract partial class MemcachedClientBase
 	{
-		private static readonly ILog log = LogManager.GetCurrentClassLogger();
+		private static readonly ILog log = LogManager.GetLogger<MemcachedClientBase>();
 		public static IContainer DefaultContainer;
 
 		private readonly ICluster cluster;
@@ -256,7 +256,7 @@ namespace Enyim.Caching.Memcached
 
 			if (retval.Success)
 			{
-				try { retval.Value = (T)transcoder.Deserialize(result.Value); }
+				try { retval.Value = (T)transcoder.Deserialize(typeof(T), result.Value); }
 				catch (Exception e)
 				{
 					if (log.IsErrorEnabled) log.Error("Failed to convert result to " + typeof(T), e);
@@ -273,7 +273,7 @@ namespace Enyim.Caching.Memcached
 		{
 			if (result.Success)
 			{
-				try { return transcoder.Deserialize(result.Value); }
+				try { return transcoder.Deserialize(null, result.Value); }
 				catch (Exception e)
 				{
 					if (log.IsErrorEnabled) log.Error("Failed to deserialize value.", e);

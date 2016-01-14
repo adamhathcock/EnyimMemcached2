@@ -2,7 +2,7 @@
 {
 	internal static class EventSources
 	{
-		public static readonly CoreEventSource CoreEventSource = EventSourceFactory.Get<CoreEventSource>();
+		//public static readonly CoreEventSource CoreEventSource = EventSourceFactory.Get<CoreEventSource>();
 	}
 }
 
