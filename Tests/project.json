@@ -1,0 +1,35 @@
+{
+    "version": "3.2.3",
+    "summary": "EnyimMemcached",
+
+    "configurations": {
+        "Debug": {
+            "compilationOptions": {
+                "allowUnsafe": true
+            }
+        },
+        "Release": {
+            "compilationOptions": {
+                "allowUnsafe": true
+            }
+        }
+    },
+
+    "exclude": [ "AssemblyInfo.cs"],
+
+    "dependencies": {
+        "Extensions": "3.2.3",
+        "Memcached": "3.2.3",
+        "xunit": "2.1.0",
+        "Moq": "4.2.1510.2205",
+        "Configuration": "3.2.3"
+    },
+    "frameworks": {
+        "net451": {
+            "frameworkAssemblies": {
+                "System.Runtime": "4.0.0.0",
+                "System.Threading.Tasks": "4.0.0.0"
+            } 
+        }
+    }
+}

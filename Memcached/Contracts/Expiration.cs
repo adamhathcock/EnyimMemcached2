@@ -2,18 +2,25 @@
 
 namespace Enyim.Caching.Memcached
 {
-	public struct Expiration
+	public struct Expiration : IEquatable<Expiration>
 	{
 		private const int MaxSeconds = 60 * 60 * 24 * 30;
 		private static readonly DateTime UnixEpochUtc = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+		public static readonly Expiration Never = new Expiration(0);
 
-		public static readonly Expiration Never = new Expiration { IsAbsolute = true, IsForever = true, Value = 0 };
+		public Expiration(uint value)
+		{
+			Value = value;
+			IsForever = value == 0 || value == UInt32.MaxValue;
+			IsAbsolute = value >= MaxSeconds || IsForever;
+		}
 
 		public bool IsAbsolute { get; private set; }
 		public bool IsForever { get; private set; }
+		public bool IsNever { get { return Value == 0; } }
 		public uint Value { get; private set; }
 
-		public static implicit operator Expiration(TimeSpan validFor)
+		public static Expiration Create(TimeSpan validFor)
 		{
 			// infinity
 			if (validFor == TimeSpan.Zero || validFor == TimeSpan.MaxValue)
@@ -22,10 +29,10 @@ namespace Enyim.Caching.Memcached
 			var seconds = (uint)validFor.TotalSeconds;
 			if (seconds < MaxSeconds) return new Expiration { Value = seconds };
 
-			return (SystemTime.Now() + validFor);
+			return Create(SystemTime.Now() + validFor);
 		}
 
-		public static implicit operator Expiration(DateTime expiresAt)
+		public static Expiration Create(DateTime expiresAt)
 		{
 			if (expiresAt == DateTime.MaxValue || expiresAt == DateTime.MinValue)
 				return Never;
@@ -40,13 +47,36 @@ namespace Enyim.Caching.Memcached
 			};
 		}
 
+		public static implicit operator Expiration(TimeSpan validFor)
+		{
+			return Create(validFor);
+		}
+
+		public static implicit operator Expiration(DateTime expiresAt)
+		{
+			return Create(expiresAt);
+		}
+
 		public static implicit operator Expiration(uint value)
 		{
-			return value == 0 || value == UInt32.MaxValue
-					? Never
-					: value < MaxSeconds
-						? new Expiration { Value = value }
-						: new Expiration { IsAbsolute = true, Value = value };
+			return new Expiration(value);
+		}
+
+		public override bool Equals(object obj)
+		{
+			return Equals((Expiration)obj);
+		}
+
+		public override int GetHashCode()
+		{
+			return HashCodeCombiner.Combine((int)Value, IsAbsolute ? 0 : 1, IsForever ? 0 : 1);
+		}
+
+		public bool Equals(Expiration other)
+		{
+			return Value == other.Value
+					&& IsAbsolute == other.IsAbsolute
+					&& IsForever == other.IsForever;
 		}
 	}
 }

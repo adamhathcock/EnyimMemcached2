@@ -78,7 +78,7 @@ namespace Enyim.Caching.Tests
 			throw new NotImplementedException();
 		}
 
-		public object Deserialize(CacheItem item)
+		public object Deserialize(Type type, CacheItem item)
 		{
 			throw new NotImplementedException();
 		}
