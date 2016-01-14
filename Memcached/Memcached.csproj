@@ -40,7 +40,6 @@
       <Link>Properties\GlobalSuppressions.cs</Link>
     </Compile>
     <Compile Include="CasResult.cs" />
-    <Compile Include="Expiration.cs" />
     <Compile Include="Contracts\ICanBeSilent.cs" />
     <Compile Include="Contracts\IGetAndTouchOperation.cs" />
     <Compile Include="Contracts\IHaveResult.cs" />
